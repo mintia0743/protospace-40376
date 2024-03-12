@@ -7,8 +7,10 @@
       <%= link_to "#{current_user.name} さん", user_path(current_user), class: :greeting__link %>
 </div>
     <% end %>
-
-    <%= render partial: 'prototype', collection: @prototypes %>
-    <%# 投稿機能実装後、部分テンプレートでプロトタイプ投稿一覧を表示する %>
+<% if @prototypes.present? %>
+  <%= render partial: 'prototype', collection: @prototypes %>
+<% else %>
+  <p>プロトタイプがありません。</p>
+<% end %>
   </div>
 </main>

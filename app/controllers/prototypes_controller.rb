@@ -1,5 +1,5 @@
 class PrototypesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
 
   def index
     @prototypes = Prototype.includes(:user).order("created_at DESC")
@@ -18,19 +18,21 @@ class PrototypesController < ApplicationController
     end
   end
 
-   def show
+  def show
     @prototype = Prototype.find(params[:id])
-   end
-
-
-   def edit
-    @prototype = Prototype.find(params[:id])
+    @comment = Comment.new
+    @comments = @prototype.comments.includes(:user)
   end
 
-   def update
+  def edit
+    @prototype = Prototype.find(params[:id])
+    redirect_to root_path, alert: "他のユーザーのプロトタイプを編集する権限がありません" unless current_user == @prototype.user
+  end
+
+  def update
     @prototype = Prototype.find(params[:id])
     if @prototype.update(prototype_params)
-      redirect_to prototype_path(@prototype),notice: 'プロトタイプが更新されました'
+      redirect_to prototype_path(@prototype), notice: 'プロトタイプが更新されました'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -42,20 +44,9 @@ class PrototypesController < ApplicationController
     redirect_to root_path
   end
 
-  def show 
-    @prototype = Prototype.find(params[:id])
-    @comment = Comment.new
-    @comments = @prototype.comments.includes(:user)
-  end
-
   private
 
   def prototype_params
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
   end
-  def move_to_index
-    unless user_signed_in?
-      redirect_to action: :index
-    end
-end
 end

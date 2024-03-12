@@ -6,7 +6,7 @@
       </p>
       <%# ログインしている場合のみ、ユーザー名を表示する %>
       <% if user_signed_in? %>
-        <%= link_to "by #{current_user.name} ", user_path(current_user), class: :prototype__user %>
+        <%= link_to "by #{prototype.user.name}", user_path(prototype.user), class: :prototype__user %>
       <% end %>
       
       <%# プロトタイプの投稿者とログインしているユーザーが同じであれば以下を表示する %>

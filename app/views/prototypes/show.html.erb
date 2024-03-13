@@ -52,7 +52,7 @@
               <%= comment.content %>
               <%# コメントしたユーザーが存在する場合のみリンクを表示する %>
              <% if comment.user.present? %>
-             <%= link_to "by #{@prototype.user.name}", user_path(@prototype.user), class: :prototype__user if @prototype.user.present? %>
+             <%= link_to "by #{@comment.user.name}", user_path(@comment.user), class: :prototype__user if @prototype.user.present? %>
              <% end %>
             </li>
           <% end %>
